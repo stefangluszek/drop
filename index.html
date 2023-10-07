@@ -10,6 +10,7 @@
             console.log('I am a sender');
             peer.on('open', function (id) {
                 var conn = peer.connect(window.location.hash.substring(1));
+                document.getElementById('fileDrop').style.display = 'block';
                 document.querySelector('input').onchange = function (event) {
                     const file = event.target.files[0];
                     const reader = new FileReader();
@@ -45,4 +46,7 @@
 
 <body>
     <div id="qrcode"></div>
+    <form id="fileDrop" style="display: none;">
+        <input type="file" accept="image/*" />
+    </form>
 </body>
