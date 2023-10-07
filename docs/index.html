@@ -36,6 +36,7 @@
                         const imageUrl = URL.createObjectURL(blob);
                         const img = document.createElement('img');
                         img.src = imageUrl;
+                        document.getElementById('qrcode').style.display = 'none';
                         document.body.appendChild(img);
                     });
                 });
