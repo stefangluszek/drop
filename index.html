@@ -24,7 +24,7 @@
         } else {
             console.log('I am a receiver');
             peer.on('open', function (id) {
-                new QRCode(document.getElementById("qrcode"), `window.location.href#${id}`);
+                new QRCode(document.getElementById("qrcode"), `${window.location.href}#${id}`);
                 console.log('My peer ID is: ' + id);
             });
             peer.on('connection', function (conn) {
