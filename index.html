@@ -1,11 +1,33 @@
 <html>
 
 <head>
-    <title>Just Drop!</title>
+    <title>Pear 2 Pear</title>
+    <script src="https://unpkg.com/peerjs@1.5.1/dist/peerjs.min.js"></script>
+    <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
+    <script type="text/javascript">
+        var peer = new Peer();
+        if (!window.location.hash) {
+            peer.on('open', function (id) {
+                new QRCode(document.getElementById("qrcode"), `window.location.href#${id}`);
+                console.log('My peer ID is: ' + id);
+            });
+            peer.on('connection', function (conn) {
+                console.log('connection')
+                conn.on('open', function () {
+                    conn.on('data', function (data) {
+                        const blob = new Blob([data]);
+                        const imageUrl = URL.createObjectURL(blob);
+                        const img = document.createElement('img');
+                        img.src = imageUrl;
+                        document.body.appendChild(img);
+                    });
+                });
+            });
+
+        }
+    </script>
 </head>
 
 <body>
-    Just Drop!
+    <div id="qrcode"></div>
 </body>
-
-</html>
