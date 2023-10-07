@@ -6,13 +6,29 @@
     <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
     <script type="text/javascript">
         var peer = new Peer();
-        if (!window.location.hash) {
+        if (window.location.hash) {
+            console.log('I am a sender');
+            peer.on('open', function (id) {
+                var conn = peer.connect(window.location.hash.substring(1));
+                document.querySelector('input').onchange = function (event) {
+                    const file = event.target.files[0];
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        const arrayBuffer = e.target.result;
+                        conn.send(arrayBuffer);
+                    }
+                    reader.readAsArrayBuffer(file);
+                }
+
+            });
+        } else {
+            console.log('I am a receiver');
             peer.on('open', function (id) {
                 new QRCode(document.getElementById("qrcode"), `window.location.href#${id}`);
                 console.log('My peer ID is: ' + id);
             });
             peer.on('connection', function (conn) {
-                console.log('connection')
+                console.log('connection');
                 conn.on('open', function () {
                     conn.on('data', function (data) {
                         const blob = new Blob([data]);
@@ -23,7 +39,6 @@
                     });
                 });
             });
-
         }
     </script>
 </head>
